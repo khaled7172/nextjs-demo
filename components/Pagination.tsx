@@ -1,0 +1,61 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+  searchParams?: Record<string, string>;
+}
+
+export default function Pagination({
+  currentPage,
+  totalPages,
+  basePath,
+  searchParams = {},
+}: PaginationProps) {
+  const router = useRouter();
+
+  function goTo(page: number) {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(page));
+    router.push(`${basePath}?${params.toString()}`);
+  }
+
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-2 mt-12">
+      <button
+        onClick={() => goTo(currentPage - 1)}
+        disabled={currentPage <= 1}
+        className="px-4 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+      >
+        ← Prev
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          onClick={() => goTo(page)}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            page === currentPage
+              ? "bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900"
+              : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+          }`}
+        >
+          {page}
+        </button>
+      ))}
+
+      <button
+        onClick={() => goTo(currentPage + 1)}
+        disabled={currentPage >= totalPages}
+        className="px-4 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+      >
+        Next →
+      </button>
+    </div>
+  );
+}

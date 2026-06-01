@@ -1,21 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
   placeholder?: string;
+  initialValue?: string;
 }
 
-export default function SearchBar({ onSearch, placeholder = "Search..." }: SearchBarProps) {
-  const [query, setQuery] = useState('');
+export default function SearchBar({
+  onSearch,
+  placeholder = "Search...",
+  initialValue = "",
+}: SearchBarProps) {
+  const [query, setQuery] = useState(initialValue);
 
   useEffect(() => {
-    // Debounce the search to avoid too many updates
     const timer = setTimeout(() => {
       onSearch(query);
     }, 300);
-
     return () => clearTimeout(timer);
   }, [query, onSearch]);
 
@@ -44,10 +47,15 @@ export default function SearchBar({ onSearch, placeholder = "Search..." }: Searc
         </svg>
         {query && (
           <button
-            onClick={() => setQuery('')}
+            onClick={() => setQuery("")}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

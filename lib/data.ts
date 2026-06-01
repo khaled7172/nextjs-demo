@@ -223,3 +223,68 @@ export function getAllAuthors(): Author[] {
 export function getAllBooks(): Book[] {
   return books;
 }
+
+export interface Publisher {
+  id: number;
+  name: string;
+  foundedYear: number;
+  country: string;
+  website: string;
+  description: string;
+}
+
+export const publishers: Publisher[] = [
+  {
+    id: 1,
+    name: "Penguin Books",
+    foundedYear: 1935,
+    country: "United Kingdom",
+    website: "https://www.penguin.co.uk",
+    description:
+      "One of the world's most recognizable book publishers, known for making quality books affordable and accessible.",
+  },
+  {
+    id: 2,
+    name: "HarperCollins",
+    foundedYear: 1817,
+    country: "United States",
+    website: "https://www.harpercollins.com",
+    description:
+      "A global publishing company and one of the Big Five English-language publishers.",
+  },
+  {
+    id: 3,
+    name: "Simon & Schuster",
+    foundedYear: 1924,
+    country: "United States",
+    website: "https://www.simonandschuster.com",
+    description:
+      "An American publishing company and one of the Big Five publishers.",
+  },
+];
+
+export const publisherBooks: Record<number, number[]> = {
+  1: [1, 2, 3, 4],
+  2: [5, 6, 7, 8],
+  3: [9, 10],
+};
+
+export function getAllPublishers(): Publisher[] {
+  return publishers;
+}
+
+export function getPublisherById(id: number): Publisher | undefined {
+  return publishers.find((p) => p.id === id);
+}
+
+export function getBooksByPublisherId(publisherId: number): Book[] {
+  const bookIds = publisherBooks[publisherId] ?? [];
+  return books.filter((b) => bookIds.includes(b.id));
+}
+
+export function getPublisherByBookId(bookId: number): Publisher | undefined {
+  const entry = Object.entries(publisherBooks).find(([, ids]) =>
+    ids.includes(bookId),
+  );
+  return entry ? publishers.find((p) => p.id === Number(entry[0])) : undefined;
+}

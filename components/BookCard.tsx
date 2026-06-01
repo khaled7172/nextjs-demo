@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { Book } from '@/lib/data';
+import Link from "next/link";
+import Image from "next/image";
+import { Book } from "@/lib/data";
 
 interface BookCardProps {
   book: Book;
@@ -9,7 +9,7 @@ interface BookCardProps {
 
 export default function BookCard({ book, authorName }: BookCardProps) {
   return (
-    <Link 
+    <Link
       href={`/books/${book.id}`}
       className="bg-white dark:bg-zinc-900 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
